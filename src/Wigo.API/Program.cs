@@ -22,6 +22,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IBeneficiaryRepository, BeneficiaryRepository>();
+builder.Services.AddScoped<ITopUpRepository, TopUpRepository>();
 
 builder.Services.AddMediatR(typeof(Program).Assembly,
     typeof(AddUserCommandHandler).Assembly,

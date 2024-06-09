@@ -12,6 +12,7 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<User> Users { get; set; }
     public DbSet<Beneficiary> Beneficiaries { get; set; }
+    public DbSet<TopUpOption> TopUpOptions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -29,5 +30,15 @@ public class ApplicationDbContext : DbContext
             .Property(b => b.Nickname)
             .IsRequired()
             .HasMaxLength(20);
+
+        modelBuilder.Entity<TopUpOption>().HasData(
+            TopUpOption.Create(amount: 5m),
+            TopUpOption.Create(amount: 10m),
+            TopUpOption.Create(amount: 20m),
+            TopUpOption.Create(amount: 30m),
+            TopUpOption.Create(amount: 50m),
+            TopUpOption.Create(amount: 75m),
+            TopUpOption.Create(amount: 100m)
+        );
     }
 }
