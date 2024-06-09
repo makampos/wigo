@@ -23,8 +23,4 @@
     <ProjectReference Include="..\Wigo.Service\Wigo.Service.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
 </Project>
