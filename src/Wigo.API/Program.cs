@@ -1,3 +1,5 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Wigo.Domain.Interfaces;
@@ -5,6 +7,7 @@ using Wigo.Infrastructure.Data;
 using Wigo.Infrastructure.Interfaces;
 using Wigo.Infrastructure.Repositories;
 using Wigo.Service.Handlers;
+using Wigo.Service.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +27,10 @@ builder.Services.AddMediatR(typeof(Program).Assembly,
     typeof(AddUserCommandHandler).Assembly,
     typeof(AddBeneficiaryCommandHandler).Assembly,
     typeof(GetBeneficiariesByUserIdQueryHandler).Assembly);
+
+// Register FluentValidation
+builder.Services.AddValidatorsFromAssemblyContaining<AddBeneficiaryCommandValidator>();
+builder.Services.AddFluentValidationAutoValidation();
 
 var app = builder.Build();
 
