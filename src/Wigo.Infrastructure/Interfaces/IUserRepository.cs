@@ -4,7 +4,6 @@ namespace Wigo.Infrastructure.Interfaces;
 
 public interface IUserRepository
 {
-    Task CreateUserAsync(User user);
-    Task<User> GetUserByIAsync(Guid id);
-    Task<User> GetUserByIdWithBeneficiariesIncludeAsync(Guid id);
+    Task<Guid> AddUserAsync(User user);
+    Task<User?> GetUserByIAsync(Guid userId);
 }

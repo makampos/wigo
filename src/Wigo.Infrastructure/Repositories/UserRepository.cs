@@ -14,22 +14,17 @@ public class UserRepository : IUserRepository
         _context = context;
     }
 
-    public async Task CreateUserAsync(User user)
+    public async Task<Guid> AddUserAsync(User user)
     {
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
+        return user.Id;
     }
 
-    public async Task<User> GetUserByIAsync(Guid userId)
+    public async Task<User?> GetUserByIAsync(Guid userId)
     {
         return await _context.Users
-            .FirstOrDefaultAsync(u => u.Id == userId);
-    }
-
-    public async Task<User> GetUserByIdWithBeneficiariesIncludeAsync(Guid userId)
-    {
-        return await _context.Users
-            .Include(u => u.Beneficiaries)
+            .AsNoTracking()
             .FirstOrDefaultAsync(u => u.Id == userId);
     }
 }
