@@ -24,5 +24,10 @@ public class ApplicationDbContext : DbContext
             .HasOne(b => b.User)
             .WithMany(u => u.Beneficiaries)
             .HasForeignKey(b => b.UserId);
+
+        modelBuilder.Entity<Beneficiary>()
+            .Property(b => b.Nickname)
+            .IsRequired()
+            .HasMaxLength(20);
     }
 }
