@@ -3,8 +3,9 @@ namespace Wigo.Domain.Entities;
 public record TopUpOption
 {
     public Guid Id { get; init; }
-    public decimal Amount { get; init; }
-    public static TopUpOption Create(decimal amount)
+    public TopUpOptionsEnum Amount { get; init; }
+
+    public static TopUpOption Create(TopUpOptionsEnum amount)
     {
         return new TopUpOption
         {

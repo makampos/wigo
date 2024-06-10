@@ -44,13 +44,13 @@ public class ApplicationDbContext : DbContext
             .HasMaxLength(20);
 
         modelBuilder.Entity<TopUpOption>().HasData(
-            TopUpOption.Create(amount: 5m),
-            TopUpOption.Create(amount: 10m),
-            TopUpOption.Create(amount: 20m),
-            TopUpOption.Create(amount: 30m),
-            TopUpOption.Create(amount: 50m),
-            TopUpOption.Create(amount: 75m),
-            TopUpOption.Create(amount: 100m)
+            TopUpOption.Create(amount: TopUpOptionsEnum.AED5),
+            TopUpOption.Create(amount: TopUpOptionsEnum.AED10),
+            TopUpOption.Create(amount: TopUpOptionsEnum.AED20),
+            TopUpOption.Create(amount: TopUpOptionsEnum.AED30),
+            TopUpOption.Create(amount: TopUpOptionsEnum.AED50),
+            TopUpOption.Create(amount: TopUpOptionsEnum.AED75),
+            TopUpOption.Create(amount: TopUpOptionsEnum.AED100)
         );
     }
 }

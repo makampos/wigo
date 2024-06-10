@@ -6,6 +6,7 @@ using Wigo.Domain.Interfaces;
 using Wigo.Infrastructure.Data;
 using Wigo.Infrastructure.Interfaces;
 using Wigo.Infrastructure.Repositories;
+using Wigo.Infrastructure.Services;
 using Wigo.Service.Handlers;
 using Wigo.Service.Validators;
 
@@ -23,11 +24,17 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IBeneficiaryRepository, BeneficiaryRepository>();
 builder.Services.AddScoped<ITopUpRepository, TopUpRepository>();
+builder.Services.AddScoped<ITopUpTransactionRepository, TopUpTransactionRepository>();
 
 builder.Services.AddMediatR(typeof(Program).Assembly,
     typeof(AddUserCommandHandler).Assembly,
     typeof(AddBeneficiaryCommandHandler).Assembly,
     typeof(GetBeneficiariesByUserIdQueryHandler).Assembly);
+
+// Register ExternalBalanceService
+var balanceServiceBaseUrl = builder.Configuration.GetSection("BalanceService:BaseUrl").Value;
+builder.Services.AddSingleton<IExternalBalanceService>(new ExternalBalanceService(balanceServiceBaseUrl));
+
 
 // Register FluentValidation
 builder.Services.AddValidatorsFromAssemblyContaining<AddBeneficiaryCommandValidator>();
