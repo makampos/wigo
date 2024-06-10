@@ -21,6 +21,13 @@ public class BeneficiaryRepository : IBeneficiaryRepository
         return beneficiary.Id;
     }
 
+    public async Task<Beneficiary?> GetBeneficiaryByIdAsync(Guid beneficiaryId)
+    {
+       return await _context.Beneficiaries
+            .AsNoTracking()
+            .FirstOrDefaultAsync(b => b.Id == beneficiaryId);
+    }
+
     public async Task<IEnumerable<Beneficiary>> GetBeneficiariesByUserIdAsync(Guid userId)
     {
         return await _context.Beneficiaries
