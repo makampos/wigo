@@ -1,4 +1,4 @@
-namespace Wigo.Domain.Entities;
+namespace Wigo.Domain.Enums;
 
 public enum TopUpOptionsEnum
 {

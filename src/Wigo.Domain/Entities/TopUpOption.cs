@@ -1,3 +1,5 @@
+using Wigo.Domain.Enums;
+
 namespace Wigo.Domain.Entities;
 
 public record TopUpOption

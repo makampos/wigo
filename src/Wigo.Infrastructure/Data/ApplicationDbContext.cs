@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Wigo.Domain.Entities;
+using Wigo.Domain.Enums;
 
 namespace Wigo.Infrastructure.Data;
 

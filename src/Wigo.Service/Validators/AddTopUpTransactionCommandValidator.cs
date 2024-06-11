@@ -1,5 +1,5 @@
 using FluentValidation;
-using Wigo.Domain.Entities;
+using Wigo.Domain.Enums;
 using Wigo.Service.Commands;
 
 namespace Wigo.Service.Validators;
