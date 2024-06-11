@@ -10,10 +10,10 @@ public class NeroDbContext : DbContext
     {
     }
 
-    public DbSet<Balance> Balances { get; set; }
+    public DbSet<AccountBalance> Balances { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Balance>();
+        modelBuilder.Entity<AccountBalance>();
     }
 }

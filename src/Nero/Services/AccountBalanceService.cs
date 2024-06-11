@@ -4,16 +4,18 @@ using Nero.Entities;
 
 namespace Nero.Services;
 
-public class BalanceService : IBalanceService
+public class AccountBalanceService : IAccountBalanceService
 {
     private readonly NeroDbContext _context;
+    private readonly ILogger<AccountBalanceService> _logger;
 
-    public BalanceService(NeroDbContext context)
+    public AccountBalanceService(NeroDbContext context, ILogger<AccountBalanceService> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
-    public async Task<string> CreateBalanceAccountAsync(Guid userId, string name)
+    public async Task<string> CreateAccountBalanceAsync(Guid userId, string name)
     {
         var account = await _context.Balances
             .Where(x => x.UserId == userId)
@@ -21,12 +23,13 @@ public class BalanceService : IBalanceService
 
         if (account.Any())
         {
+            _logger.LogWarning("User {UserId} already has a balance account.", userId);
             // Ideally not throwing an exception here, but this is just a simple example
             // There are better ways to handle this, like returning a result object
             throw new Exception("User already has a balance account.");
         }
 
-        var balance = Balance.Create(userId, name);
+        var balance = AccountBalance.Create(userId, name);
 
         _context.Balances.Add(balance);
 
@@ -35,14 +38,14 @@ public class BalanceService : IBalanceService
         return balance.UserAccountBalanceNumber;
     }
 
-    public async Task<Balance?> GetBalanceAccountAsync(Guid userId, string userAccountBalanceNumber)
+    public async Task<AccountBalance?> GetAccountBalanceAsync(Guid userId, string userAccountBalanceNumber)
     {
         return await _context.Balances
             .AsNoTracking()
             .FirstOrDefaultAsync(b => b.UserAccountBalanceNumber == userAccountBalanceNumber && b.UserId == userId);
     }
 
-    public async Task<bool> DebitBalanceAccountAsync(Guid userId, string userAccountBalanceNumber, decimal amount)
+    public async Task<bool> DebitAccountBalanceAsync(Guid userId, string userAccountBalanceNumber, decimal amount)
     {
         var balance = await _context.Balances
             .AsNoTracking()
@@ -50,10 +53,11 @@ public class BalanceService : IBalanceService
 
         if (balance == null || balance.Amount < amount)
         {
+            _logger.LogCritical("Balance account not found or insufficient funds for user {UserId}", userId);
             return false;
         }
 
-        balance = balance with { Amount = balance.Amount - amount }; // Update the balance
+        balance = balance with { Amount = balance.Amount - amount };
 
         _context.Balances.Update(balance);
 
@@ -62,7 +66,7 @@ public class BalanceService : IBalanceService
         return true;
     }
 
-    public async Task<bool> CreditBalanceAccountAsync(Guid userId, string userAccountBalanceNumber, decimal amount)
+    public async Task<bool> CreditAccountBalanceAsync(Guid userId, string userAccountBalanceNumber, decimal amount)
     {
         var balance = await _context.Balances
             .AsNoTracking()
@@ -70,10 +74,11 @@ public class BalanceService : IBalanceService
 
         if (balance == null)
         {
+            _logger.LogCritical("Balance account not found for user {UserId}", userId);
             return false;
         }
 
-        balance = balance with { Amount = balance.Amount + amount }; // Update the balance
+        balance = balance with { Amount = balance.Amount + amount };
 
         _context.Balances.Update(balance);
 

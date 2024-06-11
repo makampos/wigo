@@ -2,7 +2,7 @@ using Nero.Helpers;
 
 namespace Nero.Entities;
 
-public record Balance
+public record AccountBalance
 {
     public Guid Id { get; init; }
     public required Guid UserId { get; init; }
@@ -10,9 +10,9 @@ public record Balance
     public required string UserAccountBalanceNumber { get; init; }
     public decimal Amount { get; init; }
 
-    public static Balance Create(Guid userId, string name)
+    public static AccountBalance Create(Guid userId, string name)
     {
-        return new Balance
+        return new AccountBalance
         {
             UserId = userId,
             Name = name,

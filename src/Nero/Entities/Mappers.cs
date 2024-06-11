@@ -2,8 +2,8 @@ namespace Nero.Entities;
 
 public static class Mappers
 {
-    public static BalanceDTO ToDTO(this Balance balance)
+    public static AccountBalanceDTO ToDTO(this AccountBalance accountBalance)
     {
-        return new BalanceDTO(balance.Name, balance.Amount);
+        return new AccountBalanceDTO(accountBalance.Name, accountBalance.Amount);
     }
 }

@@ -12,7 +12,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<NeroDbContext>(options =>
     options.UseSqlite("Data Source=NeroData.db"));
 
-builder.Services.AddScoped<IBalanceService, BalanceService>();
+builder.Services.AddScoped<IAccountBalanceService, AccountBalanceService>();
 
 var app = builder.Build();
 
