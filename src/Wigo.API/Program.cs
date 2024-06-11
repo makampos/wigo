@@ -32,8 +32,8 @@ builder.Services.AddMediatR(typeof(Program).Assembly,
     typeof(GetBeneficiariesByUserIdQueryHandler).Assembly);
 
 // Register ExternalBalanceService
-var balanceServiceBaseUrl = builder.Configuration.GetSection("BalanceService:BaseUrl").Value;
-builder.Services.AddSingleton<IExternalBalanceService>(new ExternalBalanceService(balanceServiceBaseUrl));
+var externalAccountBalanceServiceBaseUrl = builder.Configuration.GetSection("ExternalAccountBalanceService:BaseUrl").Value;
+builder.Services.AddSingleton<IExternalAccountBalanceService>(new ExternalAccountBalanceService(externalAccountBalanceServiceBaseUrl));
 
 
 // Register FluentValidation

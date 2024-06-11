@@ -12,18 +12,18 @@ public class AddTopUpTransactionHandler : IRequestHandler<AddTopUpTransactionCom
     private readonly IUserRepository _userRepository;
     private readonly IBeneficiaryRepository _beneficiaryRepository;
     private readonly ITopUpTransactionRepository _topUpTransactionRepository;
-    private readonly IExternalBalanceService _balanceService;
+    private readonly IExternalAccountBalanceService _accountBalanceService;
 
     public AddTopUpTransactionHandler(
         IUserRepository userRepository,
         IBeneficiaryRepository beneficiaryRepository,
         ITopUpTransactionRepository topUpTransactionRepository,
-        IExternalBalanceService balanceService)
+        IExternalAccountBalanceService accountBalanceService)
     {
         _userRepository = userRepository;
         _beneficiaryRepository = beneficiaryRepository;
         _topUpTransactionRepository = topUpTransactionRepository;
-        _balanceService = balanceService;
+        _accountBalanceService = accountBalanceService;
     }
 
     public async Task<ServiceResult<Guid>> Handle(AddTopUpTransactionCommand command, CancellationToken cancellationToken)
@@ -44,7 +44,7 @@ public class AddTopUpTransactionHandler : IRequestHandler<AddTopUpTransactionCom
         }
 
         // Check user's balance
-        var balance = await _balanceService.GetBalanceAsync(command.UserAccountBalanceNumber);
+        var balance = await _accountBalanceService.GetAccountBalanceAsync(command.UserAccountBalanceNumber);
         var totalAmount = command.Amount;
         if (totalAmount > balance)
         {
@@ -68,7 +68,7 @@ public class AddTopUpTransactionHandler : IRequestHandler<AddTopUpTransactionCom
         }
 
         // Debit user's balance through external service
-        var debitResult = await _balanceService.DebitBalanceAsync(command.UserAccountBalanceNumber, totalAmount);
+        var debitResult = await _accountBalanceService.DebitAccountBalanceAsync(command.UserAccountBalanceNumber, totalAmount);
         if (!debitResult)
         {
             return ServiceResult<Guid>.FailureResult("Failed to debit balance.");
