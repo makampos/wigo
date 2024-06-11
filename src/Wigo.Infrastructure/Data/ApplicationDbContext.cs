@@ -43,6 +43,10 @@ public class ApplicationDbContext : DbContext
             .IsRequired()
             .HasMaxLength(20);
 
+        modelBuilder.Entity<TopUpTransaction>()
+            .Property(b => b.CreatedAt)
+            .HasColumnType("timestamp"); // without time zone
+
         modelBuilder.Entity<TopUpOption>().HasData(
             TopUpOption.Create(amount: TopUpOptionsEnum.AED5),
             TopUpOption.Create(amount: TopUpOptionsEnum.AED10),
