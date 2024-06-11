@@ -42,6 +42,6 @@ public class BalanceController : ControllerBase
             return BadRequest("Insufficient balance.");
         }
 
-        return Ok();
+        return Ok(success);
     }
 }

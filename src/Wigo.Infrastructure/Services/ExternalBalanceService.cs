@@ -30,8 +30,8 @@ public class ExternalBalanceService : IExternalBalanceService
     {
         try
         {
-            var response = await $"{_balanceServiceBaseUrl}/debit"
-                .PostJsonAsync(new { UserAccountBalanceNumber = userAccountBalanceNumber, Amount = amount })
+            var response = await $"{_balanceServiceBaseUrl}/Balance/debit"
+                .PostJsonAsync(new DebitRequest(userAccountBalanceNumber, amount))
                 .ReceiveJson<bool>();
             return response; //Check if the request was successful
         }
@@ -41,6 +41,8 @@ public class ExternalBalanceService : IExternalBalanceService
             throw new ApplicationException("Error debiting balance from external service.", ex);
         }
     }
+
+    public record DebitRequest(string UserAccountBalanceNumber, decimal Amount);
 
     private record BalanceResponse
     {

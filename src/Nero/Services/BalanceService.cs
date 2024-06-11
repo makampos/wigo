@@ -15,12 +15,17 @@ public class BalanceService : IBalanceService
 
     public async Task<Balance> GetBalanceAsync(string userAccountBalanceNumber)
     {
-        return await _context.Balances.FirstOrDefaultAsync(b => b.UserAccountBalanceNumber == userAccountBalanceNumber);
+        return await _context.Balances
+            .AsNoTracking()
+            .FirstOrDefaultAsync(b => b.UserAccountBalanceNumber == userAccountBalanceNumber);
     }
 
     public async Task<bool> DebitBalanceAsync(string userAccountBalanceNumber, decimal amount)
     {
-        var balance = await _context.Balances.FirstOrDefaultAsync(b => b.UserAccountBalanceNumber == userAccountBalanceNumber);
+        var balance = await _context.Balances
+            .AsNoTracking()
+            .FirstOrDefaultAsync(b => b.UserAccountBalanceNumber == userAccountBalanceNumber);
+
         if (balance == null || balance.Amount < amount)
         {
             return false;
@@ -29,6 +34,7 @@ public class BalanceService : IBalanceService
         balance = balance with { Amount = balance.Amount - amount }; // Update the balance
 
         _context.Balances.Update(balance);
+
         await _context.SaveChangesAsync();
 
         return true;
