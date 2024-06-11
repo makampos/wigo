@@ -5,15 +5,16 @@ namespace Nero.Entities;
 public record Balance
 {
     public Guid Id { get; init; }
+    public required Guid UserId { get; init; }
     public required string Name { get; init; }
-    public string UserAccountBalanceNumber { get; init; }
-    public required decimal Amount { get; init; }
+    public required string UserAccountBalanceNumber { get; init; }
+    public decimal Amount { get; init; }
 
-    public static Balance Create(string name, decimal amount)
+    public static Balance Create(Guid userId, string name)
     {
         return new Balance
         {
-            Amount = amount,
+            UserId = userId,
             Name = name,
             UserAccountBalanceNumber = UserAccountBalanceNumberGenerator.GenerateUserAccountBalanceNumber(),
         };

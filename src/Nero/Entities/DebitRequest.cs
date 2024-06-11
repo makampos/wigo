@@ -1,3 +1,3 @@
 namespace Nero.Entities;
 
-public record DebitRequest(string UserAccountBalanceNumber, decimal Amount);
+public record DebitRequest(Guid UserId, string UserAccountBalanceNumber, decimal Amount);

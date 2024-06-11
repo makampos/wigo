@@ -16,15 +16,4 @@ public class NeroDbContext : DbContext
     {
         modelBuilder.Entity<Balance>();
     }
-
-    public void SeedData()
-    {
-        if (!Balances.Any())
-        {
-            Balances.AddRange(
-                Balance.Create("Some Account", 500)
-            );
-            SaveChanges();
-        }
-    }
 }

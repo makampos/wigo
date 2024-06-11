@@ -16,14 +16,6 @@ builder.Services.AddScoped<IBalanceService, BalanceService>();
 
 var app = builder.Build();
 
-// Seed initial data
-using (var scope = app.Services.CreateScope())
-{
-    var dbContext = scope.ServiceProvider.GetRequiredService<NeroDbContext>();
-    dbContext.Database.EnsureCreated(); // Ensure the database is created
-    dbContext.SeedData(); // Seed initial data
-}
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -38,3 +30,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { }
