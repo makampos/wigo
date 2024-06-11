@@ -14,7 +14,7 @@ public class AddTopUpTransactionHandlerTests
     private readonly IUserRepository _userRepository;
     private readonly IBeneficiaryRepository _beneficiaryRepository;
     private readonly ITopUpTransactionRepository _topUpTransactionRepository;
-    private readonly IExternalAccountBalanceService _accountBalanceService;
+    private readonly IExternalAccountBalanceService _externalAccountBalanceService;
     private readonly AddTopUpTransactionHandler _handler;
 
     public AddTopUpTransactionHandlerTests()
@@ -22,13 +22,13 @@ public class AddTopUpTransactionHandlerTests
         _userRepository = Substitute.For<IUserRepository>();
         _beneficiaryRepository = Substitute.For<IBeneficiaryRepository>();
         _topUpTransactionRepository = Substitute.For<ITopUpTransactionRepository>();
-        _accountBalanceService = Substitute.For<IExternalAccountBalanceService>();
+        _externalAccountBalanceService = Substitute.For<IExternalAccountBalanceService>();
 
         _handler = new AddTopUpTransactionHandler(
             _userRepository,
             _beneficiaryRepository,
             _topUpTransactionRepository,
-            _accountBalanceService);
+            _externalAccountBalanceService);
     }
 
     [Fact]
@@ -92,7 +92,7 @@ public class AddTopUpTransactionHandlerTests
         var beneficiary = Beneficiary.Create(userId, Faker.Name.FullName(), Faker.Phone.Number()) with { Id = beneficiaryId };
         _userRepository.GetUserByIAsync(command.UserId).Returns(user);
         _beneficiaryRepository.GetBeneficiaryByIdAsync(command.BeneficiaryId).Returns(beneficiary);
-        _accountBalanceService.GetAccountBalanceAsync(command.UserAccountBalanceNumber).Returns(99);
+        _externalAccountBalanceService.GetAccountBalanceAsync(command.UserAccountBalanceNumber).Returns(99);
 
         // Act
         var result = await _handler.Handle(command, CancellationToken.None);
@@ -120,7 +120,7 @@ public class AddTopUpTransactionHandlerTests
         var beneficiary = Beneficiary.Create(userId, Faker.Name.FullName(), Faker.Phone.Number()) with { Id = beneficiaryId };
         _userRepository.GetUserByIAsync(command.UserId).Returns(user);
         _beneficiaryRepository.GetBeneficiaryByIdAsync(command.BeneficiaryId).Returns(beneficiary);
-        _accountBalanceService.GetAccountBalanceAsync(command.UserAccountBalanceNumber).Returns(1000);
+        _externalAccountBalanceService.GetAccountBalanceAsync(command.UserAccountBalanceNumber).Returns(1000);
         _topUpTransactionRepository.GetMonthlyTotalForBeneficiary(command.UserId, command.BeneficiaryId).Returns(maxPerBeneficiary);
         _topUpTransactionRepository.GetMonthlyTotalForUser(command.UserId).Returns(2000);
 
@@ -149,7 +149,7 @@ public class AddTopUpTransactionHandlerTests
         var beneficiary = Beneficiary.Create(userId, Faker.Name.FullName(), Faker.Phone.Number()) with { Id = beneficiaryId };
         _userRepository.GetUserByIAsync(command.UserId).Returns(user);
         _beneficiaryRepository.GetBeneficiaryByIdAsync(command.BeneficiaryId).Returns(beneficiary);
-        _accountBalanceService.GetAccountBalanceAsync(command.UserAccountBalanceNumber).Returns(1500);
+        _externalAccountBalanceService.GetAccountBalanceAsync(command.UserAccountBalanceNumber).Returns(1500);
         _topUpTransactionRepository.GetMonthlyTotalForBeneficiary(command.UserId, command.BeneficiaryId).Returns(200);
         _topUpTransactionRepository.GetMonthlyTotalForUser(command.UserId).Returns(3000);
 
@@ -178,10 +178,10 @@ public class AddTopUpTransactionHandlerTests
         var beneficiary = Beneficiary.Create(userId, Faker.Name.FullName(), Faker.Phone.Number()) with { Id = beneficiaryId };
         _userRepository.GetUserByIAsync(command.UserId).Returns(user);
         _beneficiaryRepository.GetBeneficiaryByIdAsync(command.BeneficiaryId).Returns(beneficiary);
-        _accountBalanceService.GetAccountBalanceAsync(command.UserAccountBalanceNumber).Returns(1000);
+        _externalAccountBalanceService.GetAccountBalanceAsync(command.UserAccountBalanceNumber).Returns(1000);
         _topUpTransactionRepository.GetMonthlyTotalForBeneficiary(command.UserId, command.BeneficiaryId).Returns(0);
         _topUpTransactionRepository.GetMonthlyTotalForUser(command.UserId).Returns(0);
-        _accountBalanceService.DebitAccountBalanceAsync(command.UserAccountBalanceNumber, command.Amount).Returns(false);
+        _externalAccountBalanceService.DebitAccountBalanceAsync(command.UserAccountBalanceNumber, command.Amount).Returns(false);
 
         // Act
         var result = await _handler.Handle(command, CancellationToken.None);
@@ -210,10 +210,10 @@ public class AddTopUpTransactionHandlerTests
 
         _userRepository.GetUserByIAsync(command.UserId).Returns(user);
         _beneficiaryRepository.GetBeneficiaryByIdAsync(command.BeneficiaryId).Returns(beneficiary);
-        _accountBalanceService.GetAccountBalanceAsync(command.UserAccountBalanceNumber).Returns(1000);
+        _externalAccountBalanceService.GetAccountBalanceAsync(command.UserAccountBalanceNumber).Returns(1000);
         _topUpTransactionRepository.GetMonthlyTotalForBeneficiary(command.UserId, command.BeneficiaryId).Returns(0);
         _topUpTransactionRepository.GetMonthlyTotalForUser(command.UserId).Returns(0);
-        _accountBalanceService.DebitAccountBalanceAsync(command.UserAccountBalanceNumber, command.Amount).ReturnsForAnyArgs(true);
+        _externalAccountBalanceService.DebitAccountBalanceAsync(command.UserAccountBalanceNumber, command.Amount).ReturnsForAnyArgs(true);
         _topUpTransactionRepository.AddTopUpTransactionAsync(Arg.Any<TopUpTransaction>()).Returns(topUpTransactionId);
 
         // Act
