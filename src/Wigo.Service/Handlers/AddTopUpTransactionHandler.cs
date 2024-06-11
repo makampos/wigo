@@ -28,6 +28,8 @@ public class AddTopUpTransactionHandler : IRequestHandler<AddTopUpTransactionCom
 
     public async Task<ServiceResult<Guid>> Handle(AddTopUpTransactionCommand command, CancellationToken cancellationToken)
     {
+        command = command.ApplyCharge();
+
         var user = await _userRepository.GetUserByIAsync(command.UserId);
         if (user is null)
         {
@@ -43,7 +45,7 @@ public class AddTopUpTransactionHandler : IRequestHandler<AddTopUpTransactionCom
 
         // Check user's balance
         var balance = await _balanceService.GetBalanceAsync(command.UserAccountBalanceNumber);
-        var totalAmount = command.Amount + 1; // including the charge
+        var totalAmount = command.Amount;
         if (totalAmount > balance)
         {
             return ServiceResult<Guid>.FailureResult("Insufficient balance.");
