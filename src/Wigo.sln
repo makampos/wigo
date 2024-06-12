@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wigo.Infrastructure", "Wigo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wigo.Tests", "Wigo.Tests\Wigo.Tests.csproj", "{78656610-7AEF-43DD-BE12-8B068502A416}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nero", "Nero\Nero.csproj", "{467E70A9-C0B6-4771-8E7A-226C60AEBC1A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nero.API", "Nero.API\Nero.API.csproj", "{467E70A9-C0B6-4771-8E7A-226C60AEBC1A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nero.Tests", "Nero.Tests\Nero.Tests.csproj", "{CE8536CF-BC27-4C6B-AC19-ED5340AC702E}"
 EndProject

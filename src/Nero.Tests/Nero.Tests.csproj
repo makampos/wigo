@@ -27,7 +27,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Nero\Nero.csproj" />
+      <ProjectReference Include="..\Nero.API\Nero.API.csproj" />
     </ItemGroup>
 
 </Project>
