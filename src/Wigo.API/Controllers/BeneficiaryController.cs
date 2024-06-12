@@ -6,7 +6,7 @@ using Wigo.Service.Queries;
 namespace Wigo.API.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/beneficiary")]
 public class BeneficiaryController : ControllerBase
 {
     private readonly IMediator _mediator;

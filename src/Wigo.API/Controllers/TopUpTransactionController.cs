@@ -5,7 +5,7 @@ using Wigo.Service.Commands;
 namespace Wigo.API.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/top-up-transaction")]
 public class TopUpTransactionController : ControllerBase
 {
     private readonly IMediator _mediator;
