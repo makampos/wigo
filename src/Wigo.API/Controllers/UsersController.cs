@@ -5,7 +5,7 @@ using Wigo.Service.Commands;
 namespace Wigo.API.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/user")]
 public class UsersController : ControllerBase
 {
     private readonly IMediator _mediator;

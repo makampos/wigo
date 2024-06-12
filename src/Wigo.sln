@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wigo.Infrastructure", "Wigo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wigo.Tests", "Wigo.Tests\Wigo.Tests.csproj", "{78656610-7AEF-43DD-BE12-8B068502A416}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nero", "Nero\Nero.csproj", "{467E70A9-C0B6-4771-8E7A-226C60AEBC1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nero.Tests", "Nero.Tests\Nero.Tests.csproj", "{CE8536CF-BC27-4C6B-AC19-ED5340AC702E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +46,13 @@ Global
 		{78656610-7AEF-43DD-BE12-8B068502A416}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78656610-7AEF-43DD-BE12-8B068502A416}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78656610-7AEF-43DD-BE12-8B068502A416}.Release|Any CPU.Build.0 = Release|Any CPU
+		{467E70A9-C0B6-4771-8E7A-226C60AEBC1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{467E70A9-C0B6-4771-8E7A-226C60AEBC1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{467E70A9-C0B6-4771-8E7A-226C60AEBC1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{467E70A9-C0B6-4771-8E7A-226C60AEBC1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE8536CF-BC27-4C6B-AC19-ED5340AC702E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE8536CF-BC27-4C6B-AC19-ED5340AC702E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE8536CF-BC27-4C6B-AC19-ED5340AC702E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE8536CF-BC27-4C6B-AC19-ED5340AC702E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

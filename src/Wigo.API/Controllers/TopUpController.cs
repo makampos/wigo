@@ -6,7 +6,7 @@ namespace Wigo.API.Controllers;
 
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/top-up")]
 public class TopUpController : ControllerBase
 {
     private readonly ITopUpRepository _topUpRepository;
