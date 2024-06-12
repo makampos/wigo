@@ -44,7 +44,7 @@ public class AddTopUpTransactionHandler : IRequestHandler<AddTopUpTransactionCom
         }
 
         // Check user's balance
-        var balance = await _externalAccountBalanceService.GetAccountBalanceAsync(command.UserAccountBalanceNumber);
+        var balance = await _externalAccountBalanceService.GetAccountBalanceAsync(command.UserId, command.UserAccountBalanceNumber);
         var totalAmount = command.Amount;
         if (totalAmount > balance)
         {
@@ -68,7 +68,7 @@ public class AddTopUpTransactionHandler : IRequestHandler<AddTopUpTransactionCom
         }
 
         // Debit user's balance through external service
-        var debitResult = await _externalAccountBalanceService.DebitAccountBalanceAsync(command.UserAccountBalanceNumber, totalAmount);
+        var debitResult = await _externalAccountBalanceService.DebitAccountBalanceAsync(command.UserId, command.UserAccountBalanceNumber, totalAmount);
         if (!debitResult)
         {
             return ServiceResult<Guid>.FailureResult("Failed to debit balance.");

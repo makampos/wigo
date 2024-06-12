@@ -12,11 +12,11 @@ public class ExternalAccountBalanceService : IExternalAccountBalanceService
         _externalAccountBalanceServiceBaseUrl = externalAccountBalanceServiceBaseUrl;
     }
 
-    public async Task<decimal> GetAccountBalanceAsync(string userAccountBalanceNumber)
+    public async Task<decimal> GetAccountBalanceAsync(Guid userId, string userAccountBalanceNumber)
     {
         try
         {
-            var response = await $"{_externalAccountBalanceServiceBaseUrl}/account-balance/{userAccountBalanceNumber}".GetJsonAsync<AccountBalanceResponse>();
+            var response = await $"{_externalAccountBalanceServiceBaseUrl}/account-balance/{userId}/{userAccountBalanceNumber}".GetJsonAsync<AccountBalanceResponse>();
             return response.Amount;
         }
         catch (FlurlHttpException ex)
@@ -26,12 +26,12 @@ public class ExternalAccountBalanceService : IExternalAccountBalanceService
         }
     }
 
-    public async Task<bool> DebitAccountBalanceAsync(string userAccountBalanceNumber, decimal amount)
+    public async Task<bool> DebitAccountBalanceAsync(Guid userId, string userAccountBalanceNumber, decimal amount)
     {
         try
         {
             var response = await $"{_externalAccountBalanceServiceBaseUrl}/account-balance/debit"
-                .PostJsonAsync(new CreateDebitRequest(userAccountBalanceNumber, amount))
+                .PutJsonAsync(new CreateDebitRequest(userId, userAccountBalanceNumber, amount))
                 .ReceiveJson<bool>();
             return response; //Check if the request was successful
         }
@@ -42,7 +42,7 @@ public class ExternalAccountBalanceService : IExternalAccountBalanceService
         }
     }
 
-    public record CreateDebitRequest(string UserAccountBalanceNumber, decimal Amount);
+    public record CreateDebitRequest(Guid UserId, string UserAccountBalanceNumber, decimal Amount);
 
     private record AccountBalanceResponse
     {
