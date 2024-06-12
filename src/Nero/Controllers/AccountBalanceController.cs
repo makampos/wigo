@@ -67,7 +67,7 @@ public class AccountBalanceController : ControllerBase
         return Ok(success);
     }
 
-    [HttpPost("credit")]
+    [HttpPut("credit")]
     public async Task<IActionResult> CreditAccountBalanceAsync([FromBody] CreateCreditRequest request)
     {
         _logger.LogInformation("Crediting balance account for user {UserId}", request.UserId);
