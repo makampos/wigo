@@ -103,8 +103,8 @@ public class AddTopUpTransactionHandlerTests
         result.ErrorMessage.Should().Be("Insufficient balance.");
     }
 
-    [Fact]
-    public async Task Handle_ShouldReturnFailure_WhenExceedMonthlyTopUpLimitPerBeneficiary()
+    [Theory, InlineData(false, 1000), InlineData(true, 500)]
+    public async Task Handle_ShouldReturnFailure_WhenExceedMonthlyTopUpLimitPerBeneficiary(bool isVerified, decimal maxPerBeneficiary)
     {
         // Arrange
         var userId = Guid.NewGuid();
@@ -113,10 +113,9 @@ public class AddTopUpTransactionHandlerTests
             UserId: userId,
             BeneficiaryId: beneficiaryId,
             UserAccountBalanceNumber: "a3e64a30e2d44ef8901239f5d37483d9-rrsVDQ-BC903562",
-            Amount: 900);
+            Amount: 100);
 
-        decimal maxPerBeneficiary = 1000; // or 500 if user is verified
-        var user = User.Create(Faker.Name.FullName()) with { Id = userId };
+        var user = User.Create(Faker.Name.FullName()) with { Id = userId, IsVerified = isVerified};
         var beneficiary = Beneficiary.Create(userId, Faker.Name.FullName(), Faker.Phone.Number()) with { Id = beneficiaryId };
         _userRepository.GetUserByIAsync(command.UserId).Returns(user);
         _beneficiaryRepository.GetBeneficiaryByIdAsync(command.BeneficiaryId).Returns(beneficiary);
@@ -132,6 +131,7 @@ public class AddTopUpTransactionHandlerTests
         result.Success.Should().BeFalse();
         result.ErrorMessage.Should().Be($"Exceeded monthly top-up limit per beneficiary of AED {maxPerBeneficiary}.");
     }
+
 
     [Fact]
     public async Task Handle_ShouldReturnFailure_WhenExceedMonthlyTopUpLimitForAllBeneficiaries()

@@ -14,6 +14,10 @@ public class AddTopUpTransactionHandler : IRequestHandler<AddTopUpTransactionCom
     private readonly ITopUpTransactionRepository _topUpTransactionRepository;
     private readonly IExternalAccountBalanceService _externalAccountBalanceService;
 
+    private const decimal VerifiedUserMaxPerBeneficiary = 500;
+    private const decimal UnverifiedUserMaxPerBeneficiary = 1000;
+    private const decimal MaxUserMonthlyLimit = 3000;
+
     public AddTopUpTransactionHandler(
         IUserRepository userRepository,
         IBeneficiaryRepository beneficiaryRepository,
@@ -56,15 +60,15 @@ public class AddTopUpTransactionHandler : IRequestHandler<AddTopUpTransactionCom
         var monthlyTotalForUser = await _topUpTransactionRepository.GetMonthlyTotalForUser(command.UserId);
 
         // Check if the user has exceeded the monthly top-up limit
-        var maxPerBeneficiary = user.IsVerified ? 500m : 1000m;
+        var maxPerBeneficiary = GetMaxPerBeneficiary(user.IsVerified);
         if (monthlyTotalForBeneficiary + command.Amount > maxPerBeneficiary)
         {
             return ServiceResult<Guid>.FailureResult($"Exceeded monthly top-up limit per beneficiary of AED {maxPerBeneficiary}.");
         }
 
-        if (monthlyTotalForUser + command.Amount > 3000m)
+        if (monthlyTotalForUser + command.Amount > MaxUserMonthlyLimit)
         {
-            return ServiceResult<Guid>.FailureResult("Exceeded monthly top-up limit for all beneficiaries of AED 3000.");
+            return ServiceResult<Guid>.FailureResult($"Exceeded monthly top-up limit for all beneficiaries of AED {MaxUserMonthlyLimit}.");
         }
 
         // Debit user's balance through external service
@@ -83,5 +87,10 @@ public class AddTopUpTransactionHandler : IRequestHandler<AddTopUpTransactionCom
         // Add top-up transaction
         var topUpTransactionId = await _topUpTransactionRepository.AddTopUpTransactionAsync(topUpTransaction);
         return ServiceResult<Guid>.SuccessResult(topUpTransactionId);
+    }
+
+    private decimal GetMaxPerBeneficiary(bool isVerified)
+    {
+        return isVerified ? VerifiedUserMaxPerBeneficiary : UnverifiedUserMaxPerBeneficiary;
     }
 }
