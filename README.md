@@ -104,7 +104,7 @@ The project follows Clean Architecture principles and is structured into differe
     dotnet run --project Wigo.API
     ```
 
-The API will be available at `http://localhost:5295/swagger/v1/swagger.json`.
+The API will be available at `http://localhost:5295/swagger/index.html`.
 
 ## Nero Project Description
 
